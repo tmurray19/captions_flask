@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div>
+<img src="{{ url_for('static', filename=frame_loc) }}" onclick="showCoords(event)" ismap></img>
+</div>
+
+<p>Click where you want the top left corner of the caption to be on the frame above. You can preview the captions in the video at the end</p>
+
+<p id="x-coords">X Co-ordinates: <span id="x"></span></p>
+<p id="y-coords">Y Co-ordinates: <span id="y"></span></p>
+
+
+<script>
+function showCoords(event) {
+  var x = event.clientX;
+  var y = event.clientY;
+  var xCoords = (x-7); 
+  var yCoords = (y-7);
+  document.getElementById("x").innerHTML = xCoords;
+  document.getElementById("y").innerHTML = yCoords;
+}
+</script>
+
+
+
+</body>
+</html>
