@@ -1,3 +1,3 @@
 
-def generate_caption():
-    return 0
+def generate_caption(pos, proj_id, vid_id):
+    return 4078

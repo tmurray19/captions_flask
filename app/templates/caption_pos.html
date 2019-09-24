@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <script type=text/javascript src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
+  <script type=text/javascript>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+</head>
 <body>
 
 <div>
-<img src="{{ url_for('static', filename=frame_loc) }}" onclick="showCoords(event)" ismap></img>
+<img src="{{ url_for('static', filename=frame_loc) }}" id='image' onclick="showCoords(event)" ismap></img>
 </div>
 
+<p>Project ID: <span id="proj_id">{{ proj_id }}</span></p>
+<p>Video ID: <span id="vid_id">{{ vid_id }}</span></p>
 <p>Click where you want the top left corner of the caption to be on the frame above. You can preview the captions in the video at the end</p>
 
 <p id="x-coords">X Co-ordinates: <span id="x"></span></p>
@@ -23,6 +29,21 @@ function showCoords(event) {
 }
 </script>
 
+<script type=text/javascript>
+d = new Date();
+$(function() {
+  $('#image').bind('click', function() {
+    $.getJSON($SCRIPT_ROOT + '/_render_caption', {
+      x: $('#x').val(),
+      y: $('#y').val(),
+      proj_id: $('#proj_id').val(),
+      vid_id: $('vid_id').val()
+    }, function(data) {
+      $('#image').attr("src", data.image_status);
+    });
+  });
+});
+</script>
 
 
 </body>

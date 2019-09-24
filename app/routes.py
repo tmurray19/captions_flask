@@ -26,17 +26,26 @@ def view(proj_id):
 
 @app.route('/caption/<int:proj_id>/<int:vid_id>')
 def caption_generator(proj_id, vid_id):
-    frame_file = 'img/{}/{}_frame.jpg'.format(str(proj_id), str(vid_id))
+    get_frame_from_id(proj_id, vid_id)
+    frame_file = 'img/{}/{}_frame.png'.format(str(proj_id), str(vid_id))
     print(frame_file)
-    return render_template('caption_pos.html', frame_loc = frame_file)
+    return render_template('caption_pos.html', frame_loc = frame_file, proj_id=proj_id, vid_id=vid_id)
 
 @app.route('/_render_caption')
 def render_caption():
-    x = request.args.get('x', 0, type=int)
-    y = request.args.get('y', 0, type=int)
+    x = request.args.get('x', 0, type=str)
+    y = request.args.get('y', 0, type=str)
+    proj_id = request.args.get('proj_id', 0, type=str)
+    vid_id = request.args.get('vid_id', 0, type=str)
+    print(x)
+    print(y)
+    print(proj_id)
+    print(vid_id)
     loc = (x, y)
-    clip = create_caption.generate_caption()
-    pass
+    img = create_caption.generate_caption(loc, proj_id, vid_id)    
+    print(img)
+    return jsonify(image_status = img)
+    
 
 
 api = Api(app)
@@ -50,15 +59,22 @@ class RenderChunk(Resource):
 
 
 def get_frame_from_id(proj_id, vid_id):
+    if os.path.isfile(os.getcwd() + '/app/static/img/' + str(proj_id) + '/{}_frame.png'.format(str(vid_id))):
+        print("File exists")
+        return os.getcwd() + '/app/static/img/' + str(proj_id) + '/{}_frame.png'.format(str(vid_id))
     vid = os.path.join(app.config['BASE_DIR'], app.config['VIDS_LOCATION'], str(proj_id), str(vid_id)+".mp4")
+    print("At file {}".format(vid))
     vid = VideoFileClip(vid)
-    if not os.path.isdir('app/' + 'img/' + str(proj_id)):
-        os.mkdir('app/' + 'img/' + str(proj_id))
+    print(vid)
+    if not os.path.isdir(os.getcwd() + '/app/static/img/' + str(proj_id)):
+        print("Making dir: ")
+        print(os.mkdir(os.getcwd() + '/app/static/img/' + str(proj_id)))
+        os.mkdir(os.getcwd() + '/app/static/img/' + str(proj_id))
     vid.save_frame(
-        'app/' + 'img/' + str(proj_id) + '/{}_frame.jpg'.format(str(vid_id)),
+        os.getcwd() + '/app/static/img/' + str(proj_id) + '/{}_frame.png'.format(str(vid_id)),
         t=1
     )
 
-    print('app/' + 'img/' + str(proj_id) + '/{}_frame.jpg'.format(str(vid_id)))
-    return 'app/' + 'img/' + str(proj_id) + '/{}_frame.jpg'.format(str(vid_id))
+    print(os.getcwd() + '/app/static/img/' + str(proj_id) + '/{}_frame.png'.format(str(vid_id)))
+    return os.getcwd() + '/app/static/img/' + str(proj_id) + '/{}_frame.png'.format(str(vid_id))
 
