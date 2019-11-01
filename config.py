@@ -9,9 +9,14 @@ class Config(object):
     # Directories
     BASE_DIR = os.environ.get('BASE_DIR') or "/mnt/csae48d5df47deax41bcxbaa"
 
+    # Windows
     BASE_DIR = os.environ.get('BASE_DIR') or "N:/project"
 
-    VIDS_LOCATION = os.environ.get('VIDS_LOCATION') or "videos"
+    # Mac
+    BASE_DIR = os.environ.get('BASE_DIR') or '/Users/Taidghmurray'
+    VIDS_LOCATION = os.environ.get('VIDS_LOCATION') or 'Downloads'
+
+    #VIDS_LOCATION = os.environ.get('VIDS_LOCATION') or "videos"
     QUEUE_LOCATION = os.environ.get('QUEUE_LOCATION') or 'renderQueue'
     LOGS_LOCATION = os.environ.get('LOGS_LOCATION') or "logs" 
     RESOURCE_PATH = os.environ.get('RESOURCE_PATH') or 'resource'
@@ -29,11 +34,3 @@ class Config(object):
     SHARE_NAME = os.environ.get('SHARE_NAME') or 'cs-william-squarev-media-10037ffe909d3982' 
     # Defining name of json file containing edits
     PROJECT_NAME = os.environ.get('PROJECT_NAME') or 'FinalSubclipJson.json'
-
-    # Refresh locations
-
-    EDITORLOC = 'https://dev.squarev.mobi/videos/'
-    DBCONNSERV = os.environ.get('DBCONNSERV') or 'DEV//SQLEXPRESS'
-    DBASE = os.environ.get('DBASE') or 'ShowWorx'
-    DBBUUID = os.environ.get('DBBUUID') or 'sqv-odbc'
-    DBPW = os.environ.get('DBPW') or 'sqvdev@$365'

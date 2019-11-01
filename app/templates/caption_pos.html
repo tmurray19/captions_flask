@@ -3,11 +3,12 @@
 <head>
   <script type=text/javascript src="{{ url_for('static', filename='jquery-3.4.1.min.js') }}"></script>
   <script type=text/javascript>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+  <script type=text/javascript src="{{ url_for('static', filename='jscolor.js') }}"></script>
 </head>
 <body>
 
 <div>
-<img src="{{ url_for('static', filename=frame_loc) }}" id='image' onclick="showCoords(event)" ismap></img>
+<img src="{{ url_for('static', filename=frame_loc) }}" id='image' onclick="showCoords(event)"></img>
 </div>
 
 <p>Project ID: <span id="proj_id">{{ proj_id }}</span></p>
@@ -17,7 +18,35 @@
 <p id="x-coords">X Co-ordinates: <span id="x"></span></p>
 <p id="y-coords">Y Co-ordinates: <span id="y"></span></p>
 
+Color: <input class="jscolor" value="ab2567" name='txt-colour'>
 
+<select id='font-size'>
+    <option value="Small">Small</option>
+    <option value="Medium">Medium</option>
+    <option value="Large">Large</option>
+    <option value="X-Large">X-Large</option>
+    <option value="XX-Large">XX-Large</option>
+</select> 
+
+
+<!---FOR PRODUCTION-->
+<select id='font'>
+    <option value="Arial">Arial</option>
+    <option value="Bookman">Bookman</option>
+    <option value="Comic-Sans-MS">Comic-Sans-MS</option>
+    <option value="Courier">Courier</option>
+    <option value="Forte">Forte</option>
+    <option value="Garamond-Bold">Garamond</option>
+    <option value="Georgia-Bold">Georgia</option>
+    <option value="Palatino-Linotype">Palatino</option>
+    <option value="Rage-Italic">Rage-Italic</option>
+    <option value="Times-New-Roman">Times-New-Roman</option>
+    <option value="Trebuchet-MS">Trebuchet-MS</option>
+</select> 
+
+
+<p><textarea size=25 maxlength="25" name=capt></textarea>Enter Text</p>
+<img src="" id="complete"></img>
 <script>
 function showCoords(event) {
   var x = event.clientX;
@@ -31,16 +60,45 @@ function showCoords(event) {
 
 <script type=text/javascript>
 d = new Date();
+$.ajaxSetup({async: false});
 $(function() {
+  console.log("Start");
   $('#image').bind('click', function() {
     $.getJSON($SCRIPT_ROOT + '/_render_caption', {
-      x: $('#x').val(),
-      y: $('#y').val(),
-      proj_id: $('#proj_id').val(),
-      vid_id: $('vid_id').val()
+      x: $('#x').text(),
+      y: $('#y').text(),
+      proj_id: $('#proj_id').text(),
+      vid_id: $('#vid_id').text(),
+      text: $('textarea[name="capt"]').val(),
+      colour: $('input[name="txt-colour"]').val(),
+      font: $('#font').val(),
+      font_size: $('#font-size').val()
     }, function(data) {
+      console.log("FUNCTION");
+      console.log(data.image_status)
       $('#image').attr("src", data.image_status);
     });
+    return false;
+  });
+});
+
+$(function() {
+  $('#return').bind('click', function() {
+    $.getJSON($SCRIPT_ROOT + '/_render_caption', {
+      x: $('#x').text(),
+      y: $('#y').text(),
+      proj_id: $('#proj_id').text(),
+      vid_id: $('#vid_id').text(),
+      text: $('textarea[name="capt"]').val(),
+      colour: $('input[name="txt-colour"]').val(),
+      font: $('#font').val(),
+      font_size: $('#font-size').val()
+    }, function(data) {
+      console.log("FUNCTION");
+      console.log(data.image_status)
+      $('#image').attr("src", data.image_status);
+    });
+    return false;
   });
 });
 </script>

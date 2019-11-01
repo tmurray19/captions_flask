@@ -1,0 +1,36 @@
+      $('#image').attr("src", data.image_status);
+
+
+$.ajaxSetup({async: false});
+$(function() {
+  $('#image').bind('click', function() {
+    $.getJSON($SCRIPT_ROOT + '/_render_caption', {
+      x: $('#x').text(),
+      y: $('#y').text(),
+      proj_id: $('#proj_id').text(),
+      vid_id: $('#vid_id').text(),
+      text: $('textarea[name="capt"]').val()
+    }, setTimeout( function(data) {
+      $('#complete').attr("src", data.image_status);
+      }, 2000);
+    );
+    return false;
+  });
+});
+
+
+
+<!---FOR PRODUCTION-->
+<select id='font'>
+    <option value="Arial">Arial</option>
+    <option value="Bookman">Bookman</option>
+    <option value="Comic-Sans-MS">Comic-Sans-MS</option>
+    <option value="Courier">Courier</option>
+    <option value="Forte">Forte</option>
+    <option value="Garamond-Bold">Garamond</option>
+    <option value="Georgia-Bold">Georgia</option>
+    <option value="Palatino-Linotype">Palatino</option>
+    <option value="Rage-Italic">Rage-Italic</option>
+    <option value="Times-New-Roman">Times-New-Roman</option>
+    <option value="Trebuchet-MS">Trebuchet-MS</option>
+</select> 
